@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MALEESHA-V3 | Railway Code Generator</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    font-family:Arial,Helvetica,sans-serif;
+    background:#0a0a0a;
+    color:#fff;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* BACKGROUND */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-3;
+    background:
+        radial-gradient(circle at 20% 20%,rgba(220,20,60,.18),transparent 30%),
+        radial-gradient(circle at 80% 70%,rgba(255,0,0,.12),transparent 30%),
+        linear-gradient(180deg,#120202,#050101);
+}
+
+body::after{
+    content:"";
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    opacity:.35;
+    background-image:
+        linear-gradient(rgba(220,20,60,.025) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(220,20,60,.025) 1px,transparent 1px);
+    background-size:45px 45px;
+    pointer-events:none;
+}
+
+/* PARTICLES */
+
+.particles{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+    overflow:hidden;
+    pointer-events:none;
+}
+
+.particle{
+    position:absolute;
+    width:3px;
+    height:3px;
+    border-radius:50%;
+    background:#ff1e38;
+    box-shadow:0 0 12px #ff1e38;
+    animation:float 14s linear infinite;
+}
+
+.p1{left:7%;animation-delay:0s}
+.p2{left:18%;animation-delay:3s}
+.p3{left:31%;animation-delay:6s}
+.p4{left:47%;animation-delay:2s}
+.p5{left:61%;animation-delay:7s}
+.p6{left:76%;animation-delay:4s}
+.p7{left:89%;animation-delay:1s}
+
+@keyframes float{
+    0%{
+        transform:translateY(110vh);
+        opacity:0;
+    }
+
+    15%{
+        opacity:1;
+    }
+
+    85%{
+        opacity:1;
+    }
+
+    100%{
+        transform:translateY(-10vh);
+        opacity:0;
+    }
+}
+
+/* =========================
+   MUSIC
+========================= */
+
+#musicOverlay{
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(12,2,2,.97);
+    backdrop-filter:blur(15px);
+}
+
+.musicBox{
+    width:90%;
+    max-width:390px;
+    padding:35px 25px;
+    text-align:center;
+    border:1px solid #ff1e38;
+    border-radius:25px;
+    background:linear-gradient(
+        145deg,
+        rgba(45,4,8,.96),
+        rgba(15,1,2,.98)
+    );
+    box-shadow:
+        0 0 30px rgba(220,20,60,.4),
+        0 0 90px rgba(255,0,0,.15);
+}
+
+.musicIcon{
+    width:75px;
+    height:75px;
+    margin:auto;
+    margin-bottom:18px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    border-radius:50%;
+    border:2px solid #ff334b;
+    font-size:34px;
+    box-shadow:0 0 25px #cc0029;
+    animation:pulse 1.5s infinite;
+}
+
+@keyframes pulse{
+    0%,100%{
+        transform:scale(1);
+    }
+
+    50%{
+        transform:scale(1.08);
+    }
+}
+
+.musicBox h2{
+    color:#ff334b;
+    margin-bottom:10px;
+}
+
+.musicBox p{
+    color:#c28e94;
+    font-size:14px;
+    line-height:1.6;
+    margin-bottom:22px;
+}
+
+#startMusicBtn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:30px;
+    background:linear-gradient(90deg,#b3001b,#ff1e38);
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 0 22px rgba(220,20,60,.45);
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+nav{
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:13px 6%;
+
+    background:rgba(15,2,3,.82);
+    backdrop-filter:blur(18px);
+
+    border-bottom:1px solid rgba(220,20,60,.2);
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    font-size:20px;
+    font-weight:bold;
+}
+
+.brand img{
+    width:43px;
+    height:43px;
+    object-fit:cover;
+    border-radius:50%;
+
+    border:2px solid #ff1e38;
+
+    box-shadow:
+        0 0 12px #cc0029,
+        0 0 25px rgba(220,20,60,.25);
+}
+
+.brand span{
+    background:linear-gradient(90deg,#fff,#ff334b);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.navButton{
+    padding:9px 16px;
+    border-radius:20px;
+
+    border:1px solid #cc0029;
+    background:rgba(204,0,41,.07);
+
+    color:white;
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.navButton:hover{
+    background:#ff1e38;
+    color:#1a0004;
+    box-shadow:0 0 20px rgba(255,0,0,.5);
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    min-height:600px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+
+    text-align:center;
+
+    padding:65px 20px 45px;
+}
+
+.heroLogo{
+    width:155px;
+    height:155px;
+
+    object-fit:cover;
+    border-radius:50%;
+
+    border:3px solid #ff334b;
+
+    box-shadow:
+        0 0 25px #cc0029,
+        0 0 70px rgba(220,20,60,.35);
+
+    margin-bottom:25px;
+
+    animation:logoFloat 4s ease-in-out infinite;
+}
+
+@keyframes logoFloat{
+    0%,100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-8px);
+    }
+}
+
+.hero h1{
+    font-size:clamp(38px,8vw,65px);
+    font-weight:900;
+    letter-spacing:2px;
+
+    background:linear-gradient(
+        90deg,
+        #ffffff,
+        #ffdae0,
+        #ff1e38
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+
+    margin-bottom:8px;
+}
+
+.subtitle{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:13px;
+
+    color:#ff334b;
+
+    font-size:13px;
+    letter-spacing:5px;
+    font-weight:bold;
+}
+
+.subtitle::before,
+.subtitle::after{
+    content:"";
+
+    width:65px;
+    height:1px;
+
+    background:#ff334b;
+
+    box-shadow:0 0 8px #ff334b;
+}
+
+.heroText{
+    max-width:680px;
+
+    color:#bda8ac;
+
+    line-height:1.8;
+
+    font-size:14px;
+
+    margin:20px auto 28px;
+}
+
+/* ONLY ONE CONNECT BUTTON */
+
+.connectButton{
+    border:none;
+
+    padding:15px 32px;
+
+    border-radius:30px;
+
+    background:linear-gradient(
+        90deg,
+        #990018,
+        #ff1e38
+    );
+
+    color:white;
+
+    font-weight:bold;
+    font-size:15px;
+
+    cursor:pointer;
+
+    box-shadow:
+        0 0 20px rgba(220,20,60,.4);
+
+    transition:.3s;
+}
+
+.connectButton:hover{
+    transform:translateY(-3px);
+
+    box-shadow:
+        0 0 35px rgba(255,30,60,.65);
+}
+
+/* =========================
+   PAIRING SECTION
+========================= */
+
+.pairSection{
+    padding:20px 20px 65px;
+}
+
+.pairCard{
+    max-width:780px;
+    margin:auto;
+
+    padding:40px 30px;
+
+    border-radius:28px;
+
+    border:1px solid rgba(220,20,60,.8);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(45,4,8,.78),
+            rgba(15,1,2,.9)
+        );
+
+    box-shadow:
+        0 0 25px rgba(220,20,60,.25),
+        0 0 80px rgba(150,0,20,.12);
+
+    position:relative;
+    overflow:hidden;
+}
+
+.pairCard::before{
+    content:"";
+
+    position:absolute;
+
+    width:250px;
+    height:250px;
+
+    right:-120px;
+    top:-120px;
+
+    background:#ff1e38;
+
+    opacity:.08;
+
+    filter:blur(55px);
+
+    border-radius:50%;
+}
+
+.userIcon{
+    width:75px;
+    height:75px;
+
+    margin:auto;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:50%;
+
+    border:2px solid #ff334b;
+
+    font-size:35px;
+
+    box-shadow:0 0 22px rgba(220,20,60,.35);
+}
+
+.pairCard h2{
+    text-align:center;
+
+    margin-top:18px;
+
+    font-size:30px;
+}
+
+.gradientText{
+    background:linear-gradient(
+        90deg,
+        #fff,
+        #ff334b
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.created{
+    text-align:center;
+
+    color:#c2707a;
+
+    font-size:13px;
+
+    margin-top:7px;
+    margin-bottom:30px;
+}
+
+.inputLabel{
+    display:block;
+
+    color:#ff334b;
+
+    font-weight:bold;
+
+    margin-bottom:10px;
+}
+
+.inputWrap{
+    display:flex;
+    width:100%;
+}
+
+.inputWrap input{
+    flex:1;
+
+    min-width:0;
+
+    padding:16px;
+
+    border:1px solid #b80022;
+    border-right:none;
+
+    border-radius:13px 0 0 13px;
+
+    outline:none;
+
+    background:#0d0103;
+
+    color:white;
+
+    font-size:15px;
+}
+
+.inputWrap input:focus{
+    border-color:#ff334b;
+
+    box-shadow:
+        0 0 15px rgba(220,20,60,.18);
+}
+
+/* ONLY ONE SUBMIT BUTTON */
+
+.submitButton{
+    padding:0 28px;
+
+    border:none;
+
+    border-radius:0 13px 13px 0;
+
+    background:linear-gradient(
+        90deg,
+        #ff1e38,
+        #b3001b
+    );
+
+    color:#1a0004;
+
+    font-weight:900;
+
+    cursor:pointer;
+
+    font-size:14px;
+}
+
+.result{
+    margin-top:20px;
+
+    text-align:center;
+
+    min-height:25px;
+
+    word-break:break-word;
+}
+
+#pairCode{
+    color:#ff334b;
+
+    font-size:25px;
+
+    font-weight:bold;
+
+    letter-spacing:4px;
+
+    margin:10px 0;
+
+    text-shadow:
+        0 0 15px rgba(255,50,75,.5);
+}
+
+#copyBtn{
+    display:none;
+
+    margin-top:10px;
+
+    padding:10px 22px;
+
+    border-radius:22px;
+
+    border:1px solid #ff1e38;
+
+    background:rgba(220,20,60,.08);
+
+    color:white;
+
+    cursor:pointer;
+}
+
+.infoBox{
+    margin-top:20px;
+
+    padding:14px;
+
+    border-radius:13px;
+
+    border:1px solid rgba(220,20,60,.25);
+
+    background:rgba(180,0,30,.05);
+
+    color:#bc848b;
+
+    text-align:center;
+
+    font-size:12px;
+
+    line-height:1.7;
+}
+
+/* =========================
+   FEATURES
+========================= */
+
+.features{
+    max-width:1050px;
+
+    margin:auto;
+
+    padding:10px 20px 65px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:15px;
+}
+
+.feature{
+    padding:24px 15px;
+
+    text-align:center;
+
+    border-radius:19px;
+
+    border:1px solid rgba(220,20,60,.2);
+
+    background:rgba(180,0,30,.05);
+
+    transition:.3s;
+}
+
+.feature:hover{
+    transform:translateY(-5px);
+
+    border-color:#ff334b;
+
+    box-shadow:
+        0 0 25px rgba(220,20,60,.15);
+}
+
+.featureIcon{
+    font-size:29px;
+
+    margin-bottom:10px;
+}
+
+.feature h3{
+    color:#ff334b;
+
+    font-size:15px;
+
+    margin-bottom:7px;
+}
+
+.feature p{
+    color:#a07177;
+
+    font-size:12px;
+
+    line-height:1.5;
+}
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+    max-width:900px;
+
+    margin:auto;
+
+    padding:0 20px 60px;
+
+    display:flex;
+
+    gap:15px;
+
+    flex-wrap:wrap;
+}
+
+.stat{
+    flex:1;
+
+    min-width:160px;
+
+    padding:22px;
+
+    text-align:center;
+
+    border-radius:19px;
+
+    border:1px solid rgba(220,20,60,.2);
+
+    background:rgba(180,0,30,.05);
+}
+
+.stat h2{
+    color:#ff334b;
+
+    font-size:27px;
+}
+
+.stat p{
+    color:#aa7880;
+
+    margin-top:6px;
+
+    font-size:12px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    padding:45px 20px 30px;
+
+    text-align:center;
+
+    border-top:1px solid rgba(220,20,60,.2);
+
+    background:rgba(18,2,3,.6);
+}
+
+.footerTitle{
+    font-size:27px;
+
+    font-weight:900;
+
+    background:linear-gradient(
+        90deg,
+        #fff,
+        #ff334b
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.footerSub{
+    color:#b46f77;
+
+    font-size:12px;
+
+    letter-spacing:3px;
+
+    margin-top:7px;
+}
+
+.safe{
+    color:#ff334b;
+
+    font-size:11px;
+
+    letter-spacing:4px;
+
+    margin-top:20px;
+}
+
+.copyright{
+    color:#7d454d;
+
+    font-size:11px;
+
+    margin-top:20px;
+}
+
+/* =========================
+   MODAL
+========================= */
+
+.modal{
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:5000;
+
+    background:rgba(12,2,2,.8);
+
+    backdrop-filter:blur(12px);
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:20px;
+}
+
+.modalBox{
+    width:100%;
+    max-width:410px;
+
+    padding:28px;
+
+    border-radius:24px;
+
+    border:1px solid #ff334b;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(53,5,10,.98),
+            rgba(24,1,3,.98)
+        );
+
+    box-shadow:
+        0 0 30px rgba(220,20,60,.35);
+
+    position:relative;
+
+    animation:modalIn .25s ease;
+}
+
+@keyframes modalIn{
+    from{
+        opacity:0;
+        transform:scale(.92);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+.close{
+    position:absolute;
+
+    right:13px;
+    top:13px;
+
+    width:34px;
+    height:34px;
+
+    border-radius:50%;
+
+    border:1px solid #cc0029;
+
+    background:rgba(204,0,41,.08);
+
+    color:white;
+
+    cursor:pointer;
+}
+
+.modalBox h2{
+    text-align:center;
+
+    color:#ff334b;
+
+    margin-bottom:22px;
+}
+
+.modalBox input{
+    width:100%;
+
+    padding:14px;
+
+    margin-bottom:12px;
+
+    border-radius:11px;
+
+    border:1px solid #aa001f;
+
+    background:#0a0a0a;
+
+    color:white;
+
+    outline:none;
+}
+
+.modalPairButton{
+    width:100%;
+
+    padding:14px;
+
+    border:none;
+
+    border-radius:11px;
+
+    background:linear-gradient(
+        90deg,
+        #b3001b,
+        #ff334b
+    );
+
+    color:white;
+
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+/* MOBILE */
+
+@media(max-width:700px){
+
+    .navButton{
+        display:none;
+    }
+
+    .hero{
+        min-height:570px;
+
+        padding-top:50px;
+    }
+
+    .heroLogo{
+        width:135px;
+        height:135px;
+    }
+
+    .hero h1{
+        font-size:36px;
+    }
+
+    .subtitle{
+        font-size:9px;
+
+        letter-spacing:3px;
+    }
+
+    .subtitle::before,
+    .subtitle::after{
+        width:30px;
+    }
+
+    .pairCard{
+        padding:30px 18px;
+    }
+
+    .inputWrap{
+        flex-direction:column;
+
+        gap:10px;
+    }
+
+    .inputWrap input{
+        border-right:1px solid #b80022;
+
+        border-radius:12px;
+    }
+
+    .submitButton{
+        min-height:50px;
+
+        border-radius:12px;
+    }
+
+    .features{
+        grid-template-columns:1fr 1fr;
+    }
+}
+
+@media(max-width:420px){
+
+    .features{
+        grid-template-columns:1fr;
+    }
+
+    .brand{
+        font-size:17px;
+    }
+
+    .brand img{
+        width:38px;
+        height:38px;
+    }
+
+    .heroText{
+        font-size:13px;
+    }
+
+    .pairCard h2{
+        font-size:26px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- PARTICLES -->
+
+<div class="particles">
+
+    <span class="particle p1"></span>
+    <span class="particle p2"></span>
+    <span class="particle p3"></span>
+    <span class="particle p4"></span>
+    <span class="particle p5"></span>
+    <span class="particle p6"></span>
+    <span class="particle p7"></span>
+
+</div>
+
+
+<!-- MUSIC -->
+
+<audio
+    id="bgMusic"
+    preload="auto"
+    loop
+    playsinline>
+
+    <source
+        src="https://cloud.laksidu.site/stream/hBfYaXdU9Q/lakiya-1791685869979.mpeg"
+        type="audio/mpeg">
+
+</audio>
+
+
+<!-- MUSIC SCREEN -->
+
+<div id="musicOverlay">
+
+    <div class="musicBox">
+
+        <div class="musicIcon">
+            🎵
+        </div>
+
+        <h2>
+            MALEESHA-V3
+        </h2>
+
+        <p>
+            Welcome to the MALEESHA-V3
+            Railway Code Generator.
+            Tap below to enter.
+        </p>
+
+        <button id="startMusicBtn">
+            🎵 ENTER & PLAY MUSIC
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- NAVBAR -->
+
+<nav>
+
+    <div class="brand">
+
+        <img
+            src="https://cloud.laksidu.site/stream/id9Z5k2DKm/lakiya-1791452706674.jpg"
+            alt="MALEESHA-V3">
+
+        <span>
+            MALEESHA-V3
+        </span>
+
+    </div>
+
+    <button
+        class="navButton"
+        onclick="scrollToPair()">
+
+        🔗 CONNECT BOT
+
+    </button>
+
+</nav>
+
+
+<!-- HERO -->
+
+<section class="hero">
+
+    <img
+        class="heroLogo"
+        src="https://cloud.laksidu.site/stream/id9Z5k2DKm/lakiya-1791452706674.jpg"
+        alt="MALEESHA-V3">
+
+    <h1>
+        MALEESHA-V3
+    </h1>
+
+    <div class="subtitle">
+         CODE GENERATOR
+    </div>
+
+    <p class="heroText">
+
+        Fast and powerful WhatsApp bot
+        pairing system. Connect your WhatsApp
+        account easily using the secure
+        maleesha pairing code system.
+
+    </p>
+
+    <!-- ONLY CONNECT BUTTON -->
+
+    <button
+        class="connectButton"
+        onclick="scrollToPair()">
+
+        🔗 CONNECT BOT
+
+    </button>
+
+</section>
+
+
+<!-- PAIRING SECTION -->
+
+<section
+    class="pairSection"
+    id="pairSection">
+
+    <div class="pairCard">
+
+        <div class="userIcon">
+            👤
+        </div>
+
+        <h2>
+
+            <span class="gradientText">
+                MALEESHA-V3
+            </span>
+
+        </h2>
+
+        <div class="created">
+            CREATED BY MALEESHA-V3 👑
+        </div>
+
+        <label class="inputLabel">
+
+            📱 Enter your number with country code
+
+        </label>
+
+        <div class="inputWrap">
+
+            <input
+                type="tel"
+                id="phoneNumber"
+                placeholder="Example: 947xxxxxxxx"
+                autocomplete="off">
+
+            <!-- ONLY SUBMIT BUTTON -->
+
+            <button
+                class="submitButton"
+                onclick="getPairCode()">
+
+                SUBMIT ➜
+
+            </button>
+
+        </div>
+
+
+        <div class="result">
+
+            <div id="pairCode"></div>
+
+            <!-- SHOWS ONLY AFTER CODE -->
+
+            <button
+                id="copyBtn"
+                onclick="copyCode()">
+
+                📋 COPY CODE
+
+            </button>
+
+        </div>
+
+
+        <div class="infoBox">
+
+            🟢 Enter your WhatsApp number
+            with country code.
+            <br>
+
+            Example:
+            <b>947xxxxxxxx</b>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- FEATURES -->
+
+<section class="features">
+
+    <div class="feature">
+
+        <div class="featureIcon">
+            🛡️
+        </div>
+
+        <h3>
+            Secure
+        </h3>
+
+        <p>
+            Simple and secure pairing system.
+        </p>
+
+    </div>
+
+
+    <div class="feature">
+
+        <div class="featureIcon">
+            ⚡
+        </div>
+
+        <h3>
+            Fast
+        </h3>
+
+        <p>
+            Get your pairing code quickly.
+        </p>
+
+    </div>
+
+
+    <div class="feature">
+
+        <div class="featureIcon">
+            ⚙️
+        </div>
+
+        <h3>
+            Easy To Use
+        </h3>
+
+        <p>
+            Simple interface for everyone.
+        </p>
+
+    </div>
+
+
+    <div class="feature">
+
+        <div class="featureIcon">
+            🎧
+        </div>
+
+        <h3>
+            24/7 Service
+        </h3>
+
+        <p>
+            MALEESHA-V3 bot service.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- STATS -->
+
+<section class="stats">
+
+    <div class="stat">
+
+        <h2 id="onlineCount">
+            1,008
+        </h2>
+
+        <p>
+            Online Users
+        </p>
+
+    </div>
+
+
+    <div class="stat">
+
+        <h2>
+            24/7
+        </h2>
+
+        <p>
+            Bot Service
+        </p>
+
+    </div>
+
+
+    <div class="stat">
+
+        <h2>
+            FREE
+        </h2>
+
+        <p>
+            Pairing
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer>
+
+    <div class="footerTitle">
+        MALEESHA-V3
+    </div>
+
+    <div class="footerSub">
+        RAILWAY CODE GENERATOR
+    </div>
+
+    <div class="safe">
+        🚆 SAFE • FAST • RELIABLE
+    </div>
+
+    <div class="copyright">
+        © 2026 MALEESHA-V3 — WhatsApp Bot
+    </div>
+
+</footer>
+
+
+<script>
+
+/* =========================
+   MUSIC
+========================= */
+
+const bgMusic =
+    document.getElementById("bgMusic");
+
+const musicOverlay =
+    document.getElementById("musicOverlay");
+
+const startMusicBtn =
+    document.getElementById("startMusicBtn");
+
+bgMusic.volume = 0.45;
+
+startMusicBtn.addEventListener(
+    "click",
+    async function(){
+
+        try{
+
+            await bgMusic.play();
+
+        }catch(error){
+
+            console.log(
+                "Music error:",
+                error
+            );
+
+        }
+
+        musicOverlay.style.display =
+            "none";
+
+    }
+);
+
+
+/* =========================
+   SCROLL TO PAIR
+========================= */
+
+function scrollToPair(){
+
+    document
+    .getElementById("pairSection")
+    .scrollIntoView({
+        behavior:"smooth"
+    });
+
+}
+
+
+/* =========================
+   GET PAIR CODE
+========================= */
+
+async function getPairCode(){
+
+    const input =
+        document.getElementById(
+            "phoneNumber"
+        );
+
+    const result =
+        document.getElementById(
+            "pairCode"
+        );
+
+    const copyBtn =
+        document.getElementById(
+            "copyBtn"
+        );
+
+    let number =
+        input.value.trim();
+
+    if(!number){
+
+        result.innerHTML =
+            "❌ Enter your WhatsApp number";
+
+        copyBtn.style.display =
+            "none";
+
+        return;
+
+    }
+
+    number =
+        number.replace(/\D/g,"");
+
+    if(number.length < 8){
+
+        result.innerHTML =
+            "❌ Invalid number";
+
+        copyBtn.style.display =
+            "none";
+
+        return;
+
+    }
+
+    result.innerHTML =
+        "⏳ Getting pairing code...";
+
+    copyBtn.style.display =
+        "none";
+
+
+    try{
+
+        const response =
+            await fetch(
+                "/code?number=" +
+                encodeURIComponent(number)
+            );
+
+        const data =
+            await response.json();
+
+
+        if(data.code){
+
+            result.innerHTML =
+                data.code;
+
+            window.currentPairCode =
+                data.code;
+
+            copyBtn.style.display =
+                "inline-block";
+
+        }
+
+        else if(
+            data.status ===
+            "already_connected"
+        ){
+
+            result.innerHTML =
+                "✅ Already Connected";
+
+        }
+
+        else if(data.error){
+
+            result.innerHTML =
+                "❌ " + data.error;
+
+        }
+
+        else{
+
+            result.innerHTML =
+                "❌ Failed to get pairing code";
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        result.innerHTML =
+            "❌ Connection error";
+
+    }
+
+}
+
+
+/* =========================
+   COPY
+========================= */
+
+async function copyCode(){
+
+    const code =
+        window.currentPairCode;
+
+    if(!code){
+        return;
+    }
+
+    const button =
+        document.getElementById(
+            "copyBtn"
+        );
+
+    try{
+
+        await navigator.clipboard
+            .writeText(code);
+
+        button.innerText =
+            "✅ COPIED!";
+
+        setTimeout(function(){
+
+            button.innerText =
+                "📋 COPY CODE";
+
+        },2000);
+
+    }
+
+    catch(error){
+
+        const textarea =
+            document.createElement(
+                "textarea"
+            );
+
+        textarea.value =
+            code;
+
+        document.body.appendChild(
+            textarea
+        );
+
+        textarea.select();
+
+        document.execCommand(
+            "copy"
+        );
+
+        textarea.remove();
+
+        button.innerText =
+            "✅ COPIED!";
+
+        setTimeout(function(){
+
+            button.innerText =
+                "📋 COPY CODE";
+
+        },2000);
+
+    }
+
+}
+
+
+/* =========================
+   ENTER KEY
+========================= */
+
+document
+.getElementById("phoneNumber")
+.addEventListener(
+    "keydown",
+    function(event){
+
+        if(event.key === "Enter"){
+
+            getPairCode();
+
+        }
+
+    }
+);
+
+
+/* =========================
+   ONLINE USERS
+========================= */
+
+setInterval(function(){
+
+    const base = 1008;
+
+    const random =
+        Math.floor(
+            Math.random() * 80
+        );
+
+    document
+    .getElementById("onlineCount")
+    .innerText =
+        (base + random)
+        .toLocaleString();
+
+},5000);
+
+</script>
+
+</body>
+</html>
